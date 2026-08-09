@@ -1,0 +1,16 @@
+groups:
+  - name: cloud-platform-app-alerts
+    rules:
+      - alert: AppUnresponsive
+        expr: up{job="cloud-platform-app"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "cloud-platform-app has not responded in over a minute"
+          description: >
+            The app's /health endpoint has failed scrapes for 1 minute
+            straight. Given the readiness probe already restarts a single
+            unhealthy pod within ~15-20s, sustained downtime past 1 minute
+            likely means all replicas are down or there's a networking
+            issue beyond a single pod restarting.
