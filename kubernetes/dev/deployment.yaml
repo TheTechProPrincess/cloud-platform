@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-platform-app-dev
+  labels:
+    app: cloud-platform-app
+    environment: dev
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cloud-platform-app
+  template:
+    metadata:
+      labels:
+        app: cloud-platform-app
+    spec:
+      containers:
+        - name: cloud-platform-app
+          image: cloud-platform-app:latest
+          ports:
+            - containerPort: 3000
+
+          # Restarts the container if the app becomes unresponsive
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 15
+
+          # Prevents traffic from being sent before the app is ready
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+          # Caps how much CPU/memory this container can use
+          resources:
+            requests:
+              cpu: "100m"
