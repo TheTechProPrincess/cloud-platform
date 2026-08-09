@@ -1,0 +1,40 @@
+name: Validate and Deploy Bicep
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'infrastructure/bicep/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'infrastructure/bicep/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Lint Bicep file
+        run: az bicep build --file infrastructure/bicep/main.bicep
+        continue-on-error: false
+
+      - name: Security scan (Checkov)
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: infrastructure/bicep
+          quiet: true
+          soft_fail: false
+
+  deploy:
+    needs: validate
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deployment placeholder
+        run: echo "Deployment step will connect to Azure once credentials are configured"
