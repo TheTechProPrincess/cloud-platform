@@ -20,10 +20,3 @@ incrementally with real branches, commits, and pull requests.
   Kubernetes' own self-healing)
 - **scripts/** — a bash script that checks pod health, distinguishing
   pods that are down vs. pods that are running but failing readiness
-
-## Why this structure
-
-Every piece here was chosen deliberately rather than defaulted to — see
-individual pull requests in this repo's history for the reasoning behind
-each decision (alert thresholds, base image choice, probe configuration,
-etc.).
