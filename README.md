@@ -1,4 +1,4 @@
-## cloud-platform
+## cloud-platform-devops-pipeline
 
 A DevOps pipeline project simulating real-world infrastructure automation:
 IaC, CI/CD, containerization, orchestration, and monitoring — built
